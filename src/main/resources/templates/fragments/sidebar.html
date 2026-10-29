@@ -1,0 +1,16 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><body>
+<aside class="sidebar" id="sidebar" th:fragment="sidebar(active)">
+<div class="brand"><div class="brand-icon"><i class="bi bi-shop"></i></div><div><strong>BodegaPro</strong><small>Gestión de bodega</small></div></div>
+<nav class="nav flex-column px-3 pt-3 gap-1">
+<a class="nav-link" th:classappend="${active=='dashboard'}?' active':''" th:href="@{/dashboard}"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+<a class="nav-link" th:classappend="${active=='inventario'}?' active':''" th:href="@{/inventario}"><i class="bi bi-box-seam"></i> Inventario</a>
+<a class="nav-link" th:classappend="${active=='productos'}?' active':''" th:href="@{/productos}"><i class="bi bi-tags"></i> Productos</a>
+<a class="nav-link" th:classappend="${active=='ventas'}?' active':''" th:href="@{/ventas}"><i class="bi bi-cart3"></i> Ventas</a>
+<a class="nav-link" th:classappend="${active=='clientes'}?' active':''" th:href="@{/clientes}"><i class="bi bi-people"></i> Clientes</a>
+<a class="nav-link" th:classappend="${active=='proveedores'}?' active':''" th:href="@{/proveedores}"><i class="bi bi-truck"></i> Proveedores</a>
+<a class="nav-link" th:classappend="${active=='categorias'}?' active':''" th:href="@{/categorias}"><i class="bi bi-collection"></i> Categorías</a>
+<a class="nav-link" th:classappend="${active=='reportes'}?' active':''" th:href="@{/reportes}"><i class="bi bi-bar-chart"></i> Reportes</a>
+</nav>
+<div class="sidebar-bottom"><a class="nav-link" th:classappend="${active=='configuracion'}?' active':''" th:href="@{/configuracion}"><i class="bi bi-gear"></i> Configuración</a>
+<div class="user-mini"><div class="avatar">AD</div><div><strong>Admin</strong><small>Administrador</small></div></div></div>
+</aside></body></html>

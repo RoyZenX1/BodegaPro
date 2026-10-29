@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Dashboard')}"></head>
+<body>
+  <div class="app-shell">
+    <aside th:replace="~{fragments/sidebar :: sidebar('dashboard')}"></aside>
+    <main class="main-content">
+      <header class="topbar">
+        <button class="btn btn-light d-lg-none" id="menuToggle" aria-label="Abrir menú"><i class="bi bi-list fs-4"></i></button>
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle">Resumen general de la bodega</p>
+        </div>
+        <div class="top-actions"><div class="avatar avatar-top">AD</div></div>
+      </header>
+
+      <section class="container-fluid px-4 pb-4">
+        <div th:replace="~{fragments/alertas :: alertas}"></div>
+
+        <!-- Tarjetas KPI -->
+        <section class="row g-3 mb-4" aria-label="Indicadores principales">
+          <article class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon primary"><i class="bi bi-tags"></i></div>
+              <div><small>Productos</small><h3 class="kpi-number" th:text="${productosTotal}">0</h3></div>
+            </div>
+          </article>
+          <article class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon success"><i class="bi bi-people"></i></div>
+              <div><small>Clientes</small><h3 class="kpi-number" th:text="${clientesTotal}">0</h3></div>
+            </div>
+          </article>
+          <article class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon warning"><i class="bi bi-exclamation-triangle"></i></div>
+              <div><small>Stock bajo</small><h3 class="kpi-number" th:text="${stockBajo}">0</h3></div>
+            </div>
+          </article>
+          <article class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon info"><i class="bi bi-cash-stack"></i></div>
+              <div><small>Total vendido</small>
+                <h3 class="kpi-number" th:text="|S/ ${#numbers.formatDecimal(ventasTotal,1,2)}|">S/ 0.00</h3></div>
+            </div>
+          </article>
+        </section>
+
+        <div class="row g-4">
+          <!-- Últimas ventas -->
+          <article class="col-lg-7">
+            <div class="panel-card h-100">
+              <header class="panel-header">
+                <h5><i class="bi bi-cart3 me-1"></i>Últimas ventas</h5>
+                <a th:href="@{/ventas}" class="btn btn-sm btn-light">Ver todas</a>
+              </header>
+              <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                  <caption class="visually-hidden">Últimas ventas registradas</caption>
+                  <thead>
+                    <tr><th scope="col">N°</th><th scope="col">Fecha</th><th scope="col">Cliente</th><th scope="col">Total</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="v : ${ventas}">
+                      <td th:text="${v.id}">1</td>
+                      <td th:text="${#temporals.format(v.fecha, 'dd/MM/yyyy HH:mm')}">-</td>
+                      <td th:text="${v.cliente.nombre}">Cliente</td>
+                      <td th:text="|S/ ${#numbers.formatDecimal(v.total,1,2)}|">S/ 0.00</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(ventas)}">
+                      <td colspan="4" class="text-center text-muted py-4">Aún no hay ventas registradas.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <!-- Productos con stock bajo -->
+          <article class="col-lg-5">
+            <div class="panel-card h-100">
+              <header class="panel-header">
+                <h5><i class="bi bi-box-seam me-1"></i>Productos con stock bajo</h5>
+              </header>
+              <ul class="low-stock-list list-unstyled p-3 mb-0">
+                <li th:each="p : ${productosBajo}" class="low-stock-item d-flex justify-content-between">
+                  <span th:text="${p.nombre}">Producto</span>
+                  <span class="status danger" th:text="|Stock: ${p.stock}|">Stock: 0</span>
+                </li>
+                <li th:if="${#lists.isEmpty(productosBajo)}" class="text-muted text-center py-3">
+                  <i class="bi bi-check-circle me-1"></i>Todos los productos tienen stock suficiente.
+                </li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('menuToggle')?.addEventListener('click', () =>
+      document.getElementById('sidebar').classList.toggle('collapsed'));
+  </script>
+</body>
+</html>

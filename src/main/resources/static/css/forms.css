@@ -1,0 +1,86 @@
+/* =========================================================
+   FORMS.CSS - Formularios del sistema
+   ========================================================= */
+.form-section {
+   background: #fff;
+   border: 1px solid var(--border);
+   border-radius: 16px;
+   padding: 22px;
+   box-shadow: 0 2px 8px rgba(15, 23, 42, .03)
+}
+
+.form-section-title {
+   font-size: 15px;
+   font-weight: 700;
+   margin-bottom: 4px
+}
+
+.form-section-subtitle {
+   font-size: 11px;
+   color: var(--muted);
+   margin-bottom: 20px
+}
+
+.form-label {
+   font-size: 12px;
+   font-weight: 600;
+   color: #374151;
+   margin-bottom: 6px
+}
+
+.form-control,
+.form-select {
+   transition: border-color .2s, box-shadow .2s
+}
+
+.form-control::placeholder {
+   color: #a1a9b5
+}
+
+.input-group-text {
+   background: #f8fafc;
+   border-color: #dbe1ea;
+   color: #64748b;
+   font-size: 13px
+}
+
+.required::after {
+   content: ' *';
+   color: #dc2626
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+   border-color: #22c55e
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+   border-color: #ef4444
+}
+
+.form-help {
+   display: block;
+   color: #94a3b8;
+   font-size: 10px;
+   margin-top: 5px
+}
+
+.form-actions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 8px;
+   padding-top: 16px;
+   border-top: 1px solid var(--border);
+   margin-top: 20px
+}
+
+.checkbox-card {
+   border: 1px solid var(--border);
+   border-radius: 12px;
+   padding: 14px
+}
+
+.checkbox-card:hover {
+   background: #f8fafc
+}

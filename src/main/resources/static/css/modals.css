@@ -1,0 +1,66 @@
+/* =========================================================
+   MODALS.CSS - Modales Bootstrap personalizados
+   ========================================================= */
+.modal-content {
+   box-shadow: 0 25px 60px rgba(15, 23, 42, .2)
+}
+
+.modal-header {
+   padding: 18px 20px;
+   background: #fff
+}
+
+.modal-title {
+   font-size: 16px;
+   font-weight: 700
+}
+
+.modal-body {
+   padding: 20px
+}
+
+.modal-footer {
+   padding: 14px 20px;
+   background: #fafafa
+}
+
+.modal .btn-close {
+   box-shadow: none
+}
+
+.modal-xl-custom {
+   max-width: 1100px
+}
+
+.modal .table {
+   margin-bottom: 0
+}
+
+.modal-icon {
+   width: 46px;
+   height: 46px;
+   border-radius: 12px;
+   display: grid;
+   place-items: center;
+   background: #eff6ff;
+   color: var(--primary);
+   font-size: 20px
+}
+
+.modal-delete .modal-icon {
+   background: #fee2e2;
+   color: #dc2626
+}
+
+.modal-delete .modal-title {
+   color: #b91c1c
+}
+
+.modal .form-check-label {
+   font-size: 12px
+}
+
+.modal .form-text {
+   font-size: 10px;
+   color: #94a3b8
+}

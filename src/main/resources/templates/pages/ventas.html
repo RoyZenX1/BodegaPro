@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Ventas')}"></head>
+<body>
+  <div class="app-shell">
+    <aside th:replace="~{fragments/sidebar :: sidebar('ventas')}"></aside>
+    <main class="main-content">
+      <header class="topbar">
+        <button class="btn btn-light d-lg-none" id="menuToggle" aria-label="Abrir menú"><i class="bi bi-list fs-4"></i></button>
+        <div><h1 class="page-title">Ventas</h1><p class="page-subtitle">Registro y control de ventas</p></div>
+        <div class="top-actions"><div class="avatar avatar-top">AD</div></div>
+      </header>
+
+      <section class="container-fluid px-4 pb-4">
+        <div th:replace="~{fragments/alertas :: alertas}"></div>
+
+        <article class="panel-card p-3 mb-4">
+          <h5 class="mb-3"><i class="bi bi-cart-plus me-1"></i><span th:text="${ventaForm.id != null} ? 'Editar venta' : 'Registrar nueva venta'">Registrar nueva venta</span></h5>
+          <form th:action="@{/ventas/guardar}" th:object="${ventaForm}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <div class="alert alert-danger py-2" th:if="${#fields.hasGlobalErrors()}" role="alert">
+              <p class="mb-0" th:each="err : ${#fields.globalErrors()}" th:text="${err}">Revisa los datos del formulario.</p>
+            </div>
+            <div class="row g-3 align-items-end">
+              <div class="col-md-4">
+                <label for="clienteId" class="form-label">Cliente *</label>
+                <select id="clienteId" th:field="*{clienteId}" class="form-select" required th:classappend="${#fields.hasErrors('clienteId')} ? 'is-invalid' : ''">
+                  <option value="">Seleccione cliente...</option>
+                  <option th:each="c : ${clientes}" th:value="${c.id}" th:text="|${c.nombre} — ${c.documento}|"></option>
+                </select>
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('clienteId')}" th:errors="*{clienteId}">Selecciona un cliente.</div>
+              </div>
+              <div class="col-md-4">
+                <label for="productoId" class="form-label">Producto *</label>
+                <select id="productoId" th:field="*{productoId}" class="form-select" required th:classappend="${#fields.hasErrors('productoId')} ? 'is-invalid' : ''">
+                  <option value="">Seleccione producto...</option>
+                  <option th:each="p : ${productos}" th:value="${p.id}"
+                          th:text="|${p.nombre} — S/ ${#numbers.formatDecimal(p.venta,1,2)} (stock: ${p.stock})|"
+                          th:disabled="${p.stock == 0}"></option>
+                </select>
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('productoId')}" th:errors="*{productoId}">Selecciona un producto.</div>
+              </div>
+              <div class="col-md-2">
+                <label for="cantidad" class="form-label">Cantidad *</label>
+                <input id="cantidad" type="number" th:field="*{cantidad}" min="1" step="1" class="form-control" required th:classappend="${#fields.hasErrors('cantidad')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}">La cantidad debe ser mayor que cero.</div>
+              </div>
+              <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check-lg me-1"></i><span th:text="${ventaForm.id != null} ? 'Actualizar' : 'Registrar'">Registrar</span></button>
+                <a th:if="${ventaForm.id != null}" th:href="@{/ventas}" class="btn btn-light w-100 mt-2">Cancelar edición</a>
+              </div>
+            </div>
+          </form>
+        </article>
+
+        <article class="panel-card">
+          <header class="panel-header flex-wrap gap-2">
+            <div><h5>Historial de ventas</h5><small th:text="|Total vendido: S/ ${#numbers.formatDecimal(totalVentas,1,2)}|"></small></div>
+          </header>
+          <div class="p-3">
+            <form th:action="@{/ventas/buscar}" method="get" class="search-box d-flex gap-2">
+              <i class="bi bi-search"></i>
+              <input type="search" name="termino" class="form-control" placeholder="Buscar por número, cliente o producto..." th:value="${termino}">
+              <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search me-1"></i>Buscar</button>
+              <a th:href="@{/ventas}" class="btn btn-outline-secondary">Limpiar</a>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <caption class="visually-hidden">Ventas registradas en el sistema</caption>
+              <thead><tr><th scope="col">N.º</th><th scope="col">Fecha</th><th scope="col">Cliente</th><th scope="col">Producto</th><th scope="col">Cantidad</th><th scope="col">Total</th><th scope="col">Acciones</th></tr></thead>
+              <tbody>
+                <tr th:each="v : ${ventas}">
+                  <td th:text="${v.id}">1</td>
+                  <td th:text="${#temporals.format(v.fecha, 'dd/MM/yyyy HH:mm')}">01/01/2026</td>
+                  <td th:text="${v.cliente.nombre}">Cliente</td>
+                  <td th:text="${#lists.isEmpty(v.detalles) ? '—' : v.detalles[0].producto.nombre}">Producto</td>
+                  <td th:text="${#aggregates.sum(v.detalles.![cantidad])}">1</td>
+                  <td th:text="|S/ ${#numbers.formatDecimal(v.total,1,2)}|">S/ 0.00</td>
+                  <td class="table-actions text-nowrap">
+                    <a th:href="@{/ventas/editar/{id}(id=${v.id})}" class="btn btn-sm btn-outline-primary" title="Editar venta"><i class="bi bi-pencil"></i></a>
+                    <form th:action="@{/ventas/eliminar/{id}(id=${v.id})}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar esta venta y devolver las unidades al stock?');">
+                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar venta"><i class="bi bi-trash"></i></button>
+                    </form>
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(ventas)}"><td colspan="7" class="text-center text-muted py-4"><i class="bi bi-inbox fs-3 d-block mb-2"></i>No se encontraron ventas.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('collapsed'));</script>
+</body>
+</html>

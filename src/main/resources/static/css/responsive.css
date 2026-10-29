@@ -1,0 +1,137 @@
+/* =========================================================
+   RESPONSIVE.CSS - Adaptación a móvil y tablet
+   ========================================================= */
+@media(max-width:1199.98px) {
+   .sidebar {
+      width: 230px
+   }
+
+   .main-content {
+      margin-left: 230px;
+      width: calc(100% - 230px)
+   }
+}
+
+@media(max-width:991.98px) {
+   .sidebar {
+      width: 260px;
+      box-shadow: 12px 0 30px rgba(0, 0, 0, .18)
+   }
+
+   .main-content {
+      margin-left: 0;
+      width: 100%
+   }
+
+   .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1020
+   }
+
+   .table {
+      min-width: 720px
+   }
+
+   .panel-card {
+      overflow: hidden
+   }
+
+   .mobile-overlay {
+      display: block
+   }
+}
+
+@media(max-width:767.98px) {
+   .page-title {
+      font-size: 20px
+   }
+
+   .page-subtitle {
+      font-size: 11px
+   }
+
+   .panel-header {
+      align-items: flex-start;
+      gap: 12px;
+      flex-direction: column
+   }
+
+   .panel-header .btn {
+      width: 100%
+   }
+
+   .stat-card {
+      min-height: 100px
+   }
+
+   .top-actions .btn {
+      display: none
+   }
+
+   .avatar-top {
+      margin-left: 0
+   }
+
+   .container-fluid {
+      padding-left: 12px !important;
+      padding-right: 12px !important
+   }
+
+   .modal-dialog {
+      margin: .75rem
+   }
+
+   .modal-body {
+      padding: 16px
+   }
+
+   .modal-footer {
+      flex-direction: column-reverse
+   }
+
+   .modal-footer .btn {
+      width: 100%
+   }
+}
+
+@media(max-width:575.98px) {
+   body {
+      font-size: 13px
+   }
+
+   .topbar {
+      height: 72px;
+      padding: 0 12px
+   }
+
+   .page-title {
+      font-size: 18px
+   }
+
+   .stat-card {
+      padding: 14px
+   }
+
+   .stat-icon {
+      width: 42px;
+      height: 42px;
+      font-size: 18px
+   }
+
+   .stat-card strong {
+      font-size: 18px
+   }
+
+   .panel-card {
+      border-radius: 12px
+   }
+
+   .search-box input {
+      font-size: 12px
+   }
+
+   .quick-action {
+      height: 74px
+   }
+}

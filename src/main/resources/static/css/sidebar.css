@@ -1,0 +1,86 @@
+/* =========================================================
+   SIDEBAR.CSS - Navegación lateral
+   ========================================================= */
+.sidebar {
+   transition: transform .25s ease, box-shadow .25s ease
+}
+
+.sidebar .nav {
+   overflow-y: auto;
+   scrollbar-width: thin
+}
+
+.sidebar .nav-link {
+   font-size: 13px;
+   font-weight: 500;
+   transition: background .2s, color .2s, transform .2s
+}
+
+.sidebar .nav-link i {
+   width: 19px;
+   text-align: center;
+   font-size: 16px
+}
+
+.sidebar .nav-link:hover {
+   transform: translateX(2px)
+}
+
+.brand {
+   flex-shrink: 0
+}
+
+.brand-icon {
+   box-shadow: 0 8px 20px rgba(37, 99, 235, .25)
+}
+
+.user-mini {
+   flex-shrink: 0
+}
+
+.user-mini strong {
+   font-size: 12px
+}
+
+.sidebar-section {
+   padding: 14px 13px 6px;
+   color: #64748b;
+   font-size: 9px;
+   text-transform: uppercase;
+   letter-spacing: .08em;
+   font-weight: 700
+}
+
+.sidebar.collapsed {
+   width: 78px
+}
+
+.sidebar.collapsed .brand div:last-child,
+.sidebar.collapsed .nav-link span,
+.sidebar.collapsed .user-mini div:last-child {
+   display: none
+}
+
+.sidebar.collapsed .brand {
+   justify-content: center
+}
+
+.sidebar.collapsed .nav-link {
+   justify-content: center
+}
+
+.sidebar.collapsed .user-mini {
+   justify-content: center
+}
+
+@media(max-width:991.98px) {
+   .sidebar.collapsed {
+      width: 260px
+   }
+
+   .sidebar.collapsed .brand div:last-child,
+   .sidebar.collapsed .nav-link span,
+   .sidebar.collapsed .user-mini div:last-child {
+      display: block
+   }
+}

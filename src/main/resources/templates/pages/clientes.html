@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Clientes')}"></head>
+<body>
+  <div class="app-shell">
+    <aside th:replace="~{fragments/sidebar :: sidebar('clientes')}"></aside>
+    <main class="main-content">
+      <header class="topbar">
+        <button class="btn btn-light d-lg-none" id="menuToggle" aria-label="Abrir menú"><i class="bi bi-list fs-4"></i></button>
+        <div>
+          <h1 class="page-title">Clientes</h1>
+          <p class="page-subtitle">Gestión de clientes</p>
+        </div>
+        <div class="top-actions"><div class="avatar avatar-top">AD</div></div>
+      </header>
+
+      <section class="container-fluid px-4 pb-4">
+        <div th:replace="~{fragments/alertas :: alertas}"></div>
+
+        <article class="panel-card">
+          <header class="panel-header flex-wrap gap-2">
+            <div>
+              <h5>Listado de clientes</h5>
+              <small>Registra y administra a tus clientes.</small>
+            </div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#clienteModal">
+              <i class="bi bi-plus-lg me-1"></i> Nuevo cliente</button>
+          </header>
+
+          <div class="p-3">
+            <form th:action="@{/clientes/buscar}" method="get" class="search-box d-flex gap-2">
+              <i class="bi bi-search"></i>
+              <input type="search" name="termino" class="form-control" placeholder="Buscar por nombre o documento..." th:value="${termino}">
+              <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search me-1"></i>Buscar</button>
+              <a th:href="@{/clientes}" class="btn btn-outline-secondary">Limpiar</a>
+            </form>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <caption class="visually-hidden">Clientes registrados en el sistema</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Documento</th><th scope="col">Nombre</th><th scope="col">Teléfono</th>
+                  <th scope="col">Dirección</th><th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="c : ${clientes}">
+                  <td th:text="${c.documento}">00000000</td>
+                  <td th:text="${c.nombre}">Cliente</td>
+                  <td th:text="${c.telefono}">-</td>
+                  <td th:text="${c.direccion}">-</td>
+                  <td class="table-actions">
+                    <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn btn-sm btn-outline-primary" title="Editar">
+                      <i class="bi bi-pencil"></i></a>
+                    <form th:action="@{/clientes/eliminar/{id}(id=${c.id})}" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar este cliente?');">
+                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                        <i class="bi bi-trash"></i></button>
+                    </form>
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(clientes)}">
+                  <td colspan="5" class="text-center text-muted py-4">
+                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>No se encontraron clientes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form th:action="@{/clientes/guardar}" th:object="${cliente}" method="post">
+          <div class="modal-header">
+            <h5 class="modal-title" id="clienteModalTitulo"
+                th:text="${cliente.id != null} ? 'Editar cliente' : 'Nuevo cliente'">Nuevo cliente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" th:field="*{id}">
+            <div class="alert alert-danger py-2" th:if="${#fields.hasGlobalErrors()}" role="alert">
+              <p class="mb-0" th:each="err : ${#fields.globalErrors()}" th:text="${err}">Revisa los datos del formulario.</p>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="documento" class="form-label">Documento *</label>
+                <input id="documento" th:field="*{documento}" class="form-control" required maxlength="11" pattern="([0-9]{8}|[0-9]{11})" inputmode="numeric" th:classappend="${#fields.hasErrors('documento')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('documento')}" th:errors="*{documento}">Valor no válido.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="telefono" class="form-label">Teléfono *</label>
+                <input id="telefono" th:field="*{telefono}" class="form-control" required maxlength="15" inputmode="tel" th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Valor no válido.</div>
+              </div>
+              <div class="col-12">
+                <label for="nombre" class="form-label">Nombre completo *</label>
+                <input id="nombre" th:field="*{nombre}" class="form-control" required maxlength="120" th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Valor no válido.</div>
+              </div>
+              <div class="col-12">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input id="direccion" th:field="*{direccion}" class="form-control" maxlength="255" th:classappend="${#fields.hasErrors('direccion')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}">Valor no válido.</div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar cliente</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('menuToggle')?.addEventListener('click', () =>
+      document.getElementById('sidebar').classList.toggle('collapsed'));
+  </script>
+  <script th:if="${mostrarModal == true || cliente.id != null}">
+    new bootstrap.Modal(document.getElementById('clienteModal')).show();
+  </script>
+</body>
+</html>

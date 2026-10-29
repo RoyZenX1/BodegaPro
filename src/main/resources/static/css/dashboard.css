@@ -1,0 +1,80 @@
+/* =========================================================
+   DASHBOARD.CSS - Componentes exclusivos del Dashboard
+   ========================================================= */
+.dashboard-hero {
+   background: linear-gradient(135deg, #2563eb, #1d4ed8);
+   color: #fff;
+   border-radius: 18px;
+   padding: 24px;
+   margin-bottom: 20px;
+   box-shadow: 0 10px 25px rgba(37, 99, 235, .18)
+}
+
+.dashboard-hero h2 {
+   font-size: 24px;
+   font-weight: 700;
+   margin: 0 0 6px
+}
+
+.dashboard-hero p {
+   margin: 0;
+   opacity: .85;
+   font-size: 13px
+}
+
+.stat-card {
+   transition: transform .2s ease, box-shadow .2s ease
+}
+
+.stat-card:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 8px 24px rgba(15, 23, 42, .08)
+}
+
+.quick-action {
+   transition: all .2s ease
+}
+
+.quick-action:active {
+   transform: scale(.98)
+}
+
+.low-stock-list {
+   max-height: 310px;
+   overflow-y: auto
+}
+
+.sales-summary {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 12px
+}
+
+.sales-summary .summary-box {
+   padding: 15px;
+   border: 1px solid var(--border);
+   border-radius: 12px;
+   background: #fafcff
+}
+
+.summary-box span {
+   display: block;
+   color: var(--muted);
+   font-size: 11px
+}
+
+.summary-box strong {
+   display: block;
+   font-size: 18px;
+   margin-top: 4px
+}
+
+@media(max-width:767.98px) {
+   .sales-summary {
+      grid-template-columns: 1fr
+   }
+
+   .dashboard-hero h2 {
+      font-size: 20px
+   }
+}
