@@ -18,7 +18,7 @@
     <description>Sistema de administración para una bodega con Spring MVC, JPA, Hibernate y validación.</description>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>21</java.version>
     </properties>
 
     <dependencies>
